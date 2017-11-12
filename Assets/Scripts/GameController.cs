@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
 	private const string LEVEL_SCENE = "Level";
 	public const string START_MENU_SCENE = "StartMenu";
 	public const string CREDITS_SCENE = "Credits";
+	public const string MAP_SCENE = "Map";
 
 	enum State
 	{
@@ -24,12 +25,7 @@ public class GameController : MonoBehaviour
 	public void OnWin ()
 	{
 		gameState = State.WIN;
-		DisableGameManagerCanvas ();
 		ScriptManager.LevelController.ShowWinDemo (OnCallback);
-	}
-
-	private void DisableGameManagerCanvas() {
-		gameObject.GetComponentInChildren<Canvas> ().enabled = false;
 	}
 
 	public void OnLoose ()
@@ -48,7 +44,7 @@ public class GameController : MonoBehaviour
 			}
 			PlayerController.NextLevel ();
 		}
-		SceneManager.LoadScene (GetLevelScene ());
+		SceneManager.LoadScene (MAP_SCENE);
 	}
 
 	public static string GetLevelScene ()

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class StartMenuController : MonoBehaviour {
 
 	public void OnStart() {
-		SceneManager.LoadScene(GameController.GetLevelScene());
+		SceneManager.LoadScene (GameController.MAP_SCENE);
 	}
 
 	public void OnCredits() {
