@@ -42,7 +42,7 @@ public class LevelController : MonoBehaviour
 
 	IEnumerator ShowPage (GameObject page)
 	{
-		pageInstance = Instantiate (page, new Vector2 (0, 0), Quaternion.identity);
+		pageInstance = Instantiate<GameObject> (page, new Vector2 (0, 0), Quaternion.identity);
 		AddSkipButtonHandler ();
 		AudioSource audio = pageInstance.GetComponent<AudioSource> ();
 		audio.Play ();
