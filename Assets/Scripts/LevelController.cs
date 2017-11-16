@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class LevelController : MonoBehaviour
 
 	public GameObject gameManager;
 
+	private GameObject pageInstance;
+
 
 	void Start ()
 	{
@@ -22,7 +25,7 @@ public class LevelController : MonoBehaviour
 
 	IEnumerator ShowPrehistoryDemo ()
 	{
-		if (PlayerController.IsNotPrehistoryViewed()) {
+		if (PlayerController.IsNotPrehistoryViewed ()) {
 			foreach (GameObject page in prehistoryPages) {
 				yield return ShowPage (page);
 			}
@@ -31,8 +34,16 @@ public class LevelController : MonoBehaviour
 		Instantiate (gameManager);
 	}
 
-	IEnumerator ShowPage(GameObject page) {
-		GameObject pageInstance = Instantiate (page, new Vector2 (0, 0), Quaternion.identity);
+	public void SkipDemo ()
+	{
+		Destroy (pageInstance);
+		Instantiate (gameManager);
+	}
+
+	IEnumerator ShowPage (GameObject page)
+	{
+		pageInstance = Instantiate (page, new Vector2 (0, 0), Quaternion.identity);
+		AddSkipButtonHandler ();
 		AudioSource audio = pageInstance.GetComponent<AudioSource> ();
 		audio.Play ();
 		yield return new WaitForSeconds (audio.clip.length);
@@ -40,17 +51,27 @@ public class LevelController : MonoBehaviour
 	}
 
 
+	private void AddSkipButtonHandler() {
+		Button btnSkip = pageInstance.GetComponentInChildren<Button> ();
+		if (btnSkip != null) {
+			btnSkip.onClick.AddListener (() => SkipDemo());
+		}
+	}
+
 	public delegate void CallbackFunction ();
 
-	public void ShowWinDemo(CallbackFunction callback) {
+	public void ShowWinDemo (CallbackFunction callback)
+	{
 		StartCoroutine (ShowDemo (winPages, callback));
 	}
 
-	public void ShowLooseDemo(CallbackFunction callback) {
+	public void ShowLooseDemo (CallbackFunction callback)
+	{
 		StartCoroutine (ShowDemo (loosePages, callback));
 	}
 
-	IEnumerator ShowDemo(List<GameObject> pages, CallbackFunction callback) {
+	IEnumerator ShowDemo (List<GameObject> pages, CallbackFunction callback)
+	{
 		foreach (GameObject page in pages) {
 			yield return ShowPage (page);
 			if (callback != null) {
