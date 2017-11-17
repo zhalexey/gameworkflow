@@ -3,6 +3,5 @@ obj/
 Temp/
 Assembly-CSharp.csproj
 *.apk
-*.meta
 Assembly-CSharp-Editor.csproj
 GameWorkflow*
